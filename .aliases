@@ -1,0 +1,11 @@
+alias ~='cd ~'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+alias copykey='cat ~/.ssh/id_rsa.pub | pbcopy'
+
+dockerclean() {
+    docker stop $(docker ps -a -q)
+    docker rm -f $(docker ps -a -q)
+}
