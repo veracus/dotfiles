@@ -1,12 +1,11 @@
-export ZSH=/Users/jackson/.oh-my-zsh
+export ZSH="/Users/king/.oh-my-zsh"
 
 ZSH_THEME="gnzh"
+
+export UPDATE_ZSH_DAYS=3
 
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
-source ~/.bashrc
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+alias publickey='cat ~/.ssh/id_rsa.pub | pbcopy'
