@@ -2,7 +2,8 @@
 
 # brew packages
 brew update
-brew install wget awscli golangci-lint jq nvm packer pyenv yt-dlp yq yarn
+brew install wget awscli golangci-lint jq nvm packer pyenv yt-dlp yq meetingbar
+brew install --cask jordanbaird-ice
 
 # ssh key chmod
 chmod 400 ~/.ssh/id_rsa
