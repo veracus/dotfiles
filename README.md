@@ -5,13 +5,12 @@ A guide to first-time Mac setup.
 ## Manual Installation
 
 - [Chrome](https://www.google.com/chrome)
-- [Spectacles](https://www.spectacleapp.com/)
 - [Flux](https://justgetflux.com/)
 - [Alfred](https://www.alfredapp.com/)
 - [iTerm2](https://www.iterm2.com/)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Slack](https://slack.com/downloads/mac)
-- [Terraform](https://www.terraform.io/downloads.html)
+- [Jetbrains Mono Font](https://www.jetbrains.com/lp/mono/)
 
 ## Command Line
 
