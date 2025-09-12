@@ -1,0 +1,30 @@
+{
+    "window.commandCenter": true,
+    "window.newWindowProfile": "Default",
+    "workbench.colorTheme": "Atom One Dark",
+    "editor.fontSize": 16,
+    "editor.fontFamily": "JetBrains Mono NL",
+    "editor.wordWrap": "on",
+    "editor.formatOnPaste": true,
+    "window.zoomLevel": 2,
+    "editor.accessibilitySupport": "off",
+    "editor.stickyScroll.enabled": false,
+    "search.exclude": {
+        "**/*.mod": true,
+        "**/*.sum": true
+    },
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.codeLens.scopes": [
+        "document"
+    ],
+    "gitlens.codeLens.authors.command": false,
+    "gitlens.codeLens.authors.enabled": false,
+    "gitlens.changes.locations": [
+        "gutter",
+        "line",
+        "overview"
+    ],
+    "gitlens.hovers.enabled": false,
+    "gitlens.blame.format": "${author|16} - ${agoOrDate|14-}",
+}
