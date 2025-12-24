@@ -36,7 +36,7 @@ chmod 755 ~/.ssh/id_rsa.pub
 mkdir -p ~/.config/nvm
 
 # link configuration files
-ln -sf ~/github/dotfiles/init.lua ~/.config/nvm/init.lua
+ln -sf ~/github/dotfiles/init.lua ~/.config/nvim/init.lua
 ln -sf ~/github/dotfiles/.zshrc ~/.zshrc
 ln -sf ~/github/dotfiles/.p10k.zsh ~/.p10k.zsh
 cp ~/github/dotfiles/.gitconfig ~/.gitconfig
