@@ -182,7 +182,7 @@ vim.keymap.set('i', '<D-v>', '<C-r>+', { desc = 'Paste from clipboard' })
 vim.keymap.set('v', '<D-x>', '"+d', { desc = 'Cut to clipboard' })
 
 -- Toggle GitHub Copilot with F13
-local copilot_enabled = true
+local copilot_enabled = false
 vim.keymap.set('n', '<F13>', function()
   if copilot_enabled then
     vim.cmd 'Copilot disable'
@@ -292,6 +292,11 @@ require('lazy').setup({
   -- GitHub Copilot
   {
     'github/copilot.vim',
+    config = function()
+      vim.schedule(function()
+        vim.cmd 'Copilot disable'
+      end)
+    end,
   },
 
   -- NOTE: Plugins can also be added by using a table,
