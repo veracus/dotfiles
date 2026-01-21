@@ -1007,7 +1007,23 @@ require('lazy').setup({
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       require('onedark').setup {
-        style = 'warm',
+        style = 'dark',
+        colors = {
+          bg0 = '#282c34',
+          bg1 = '#31353f',
+          bg2 = '#393f4a',
+          bg3 = '#3b3f4c',
+          bg_d = '#21252b',
+          fg = '#abb2bf',
+          red = '#e06c75',
+          green = '#98c379',
+          yellow = '#e5c07b',
+          orange = '#d19a66',
+          blue = '#61afef',
+          purple = '#c678dd',
+          cyan = '#56b6c2',
+          grey = '#5c6370',
+        },
       }
       require('onedark').load()
     end,
