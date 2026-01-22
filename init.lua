@@ -538,7 +538,8 @@ require('lazy').setup({
       vim.keymap.set('n', '<D-z>', '<cmd>undo<CR>', { desc = 'Undo last change' })
       -- command to press q key and do control six
       vim.keymap.set('n', '<leader>q', '<C-^>', { desc = 'Switch to last used buffer' })
-      vim.keymap.set('n', '<leader><leader>', smart_telescope_launch(builtin.buffers), { desc = '[ ] Find existing buffers' })
+      -- leader leader telescope resume using smart_telescope_launch
+      vim.keymap.set('n', '<leader><leader>', smart_telescope_launch(builtin.resume), { desc = 'Resume last telescope picker' })
       -- search files using command shift f
       vim.keymap.set('n', '<D-S-f>', smart_telescope_launch(builtin.live_grep), { desc = 'Search by [G]rep' })
       -- Slightly advanced example of overriding default behavior and theme
