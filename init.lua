@@ -181,6 +181,13 @@ vim.keymap.set('n', '<D-v>', '"+p', { desc = 'Paste from clipboard' })
 vim.keymap.set('i', '<D-v>', '<C-r>+', { desc = 'Paste from clipboard' })
 vim.keymap.set('v', '<D-x>', '"+d', { desc = 'Cut to clipboard' })
 
+-- If the current buffer can't be written (e.g. neo-tree), make :wq behave like :q.
+vim.cmd([[
+cnoreabbrev <expr> wq (getcmdtype() ==# ':' && getcmdline() ==# 'wq' && &buftype !=# '' ? 'q' : 'wq')
+cnoreabbrev <expr> wq! (getcmdtype() ==# ':' && getcmdline() ==# 'wq!' && &buftype !=# '' ? 'q!' : 'wq!')
+]])
+
+
 -- Toggle GitHub Copilot with F13
 local copilot_enabled = false
 vim.keymap.set('n', '<F13>', function()
