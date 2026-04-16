@@ -1236,6 +1236,33 @@ require("lazy").setup({
 			},
 		},
 	},
+	{
+		"Bekaboo/dropbar.nvim",
+		opts = {
+			symbol = {
+				on_click = false,
+			},
+			bar = {
+				enable = function(buf, win, _)
+					if vim.bo[buf].filetype == "neo-tree" then
+						return false
+					end
+					return vim.api.nvim_buf_is_valid(buf)
+						and vim.api.nvim_win_is_valid(win)
+						and vim.fn.win_gettype(win) == ""
+						and vim.wo[win].winbar == ""
+						and vim.bo[buf].buftype == ""
+				end,
+				sources = function(buf, _)
+					local sources = require("dropbar.sources")
+					return {
+						sources.path,
+					}
+				end,
+			},
+		},
+	},
+
 	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
 	--    This is the easiest way to modularize your config.
 	--
