@@ -122,6 +122,30 @@ vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
 end)
 
+-- Neovim 0.12 compatibility: some plugins may pass a 4-item range tuple
+-- instead of a TSNode to vim.treesitter.get_range().
+do
+	local ts = vim.treesitter
+	if ts and ts.get_range and ts._range and ts._range.add_bytes then
+		local function is_range_tuple(value)
+			return type(value) == "table"
+				and #value == 4
+				and type(value[1]) == "number"
+				and type(value[2]) == "number"
+				and type(value[3]) == "number"
+				and type(value[4]) == "number"
+		end
+
+		local original_get_range = ts.get_range
+		ts.get_range = function(node, source, metadata)
+			if is_range_tuple(node) then
+				return ts._range.add_bytes(assert(source), node)
+			end
+			return original_get_range(node, source, metadata)
+		end
+	end
+end
+
 -- Enable break indent
 vim.o.breakindent = true
 
