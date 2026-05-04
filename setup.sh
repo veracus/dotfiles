@@ -21,6 +21,7 @@ brew install \
   ripgrep \
   spotify \
   terraform \
+  tree-sitter-cli \
   watch \
   wget \
   yt-dlp \

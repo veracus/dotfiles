@@ -122,30 +122,6 @@ vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
 end)
 
--- Neovim 0.12 compatibility: some plugins may pass a 4-item range tuple
--- instead of a TSNode to vim.treesitter.get_range().
-do
-	local ts = vim.treesitter
-	if ts and ts.get_range and ts._range and ts._range.add_bytes then
-		local function is_range_tuple(value)
-			return type(value) == "table"
-				and #value == 4
-				and type(value[1]) == "number"
-				and type(value[2]) == "number"
-				and type(value[3]) == "number"
-				and type(value[4]) == "number"
-		end
-
-		local original_get_range = ts.get_range
-		ts.get_range = function(node, source, metadata)
-			if is_range_tuple(node) then
-				return ts._range.add_bytes(assert(source), node)
-			end
-			return original_get_range(node, source, metadata)
-		end
-	end
-end
-
 -- Enable break indent
 vim.o.breakindent = true
 
@@ -1174,12 +1150,15 @@ require("lazy").setup({
 		},
 	},
 	{ -- Highlight, edit, and navigate code
+		-- NOTE: Diverges from kickstart.nvim, which still ships the master-branch
+		-- spec. The `main` branch is the rewrite required for Neovim 0.11+ and
+		-- avoids the legacy injection-handling bugs that crash on 0.12.
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		lazy = false,
 		build = ":TSUpdate",
-		main = "nvim-treesitter.configs", -- Sets main module to use for opts
-		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-		opts = {
-			ensure_installed = {
+		config = function()
+			local parsers = {
 				"bash",
 				"c",
 				"diff",
@@ -1192,26 +1171,43 @@ require("lazy").setup({
 				"vim",
 				"vimdoc",
 				"json",
-				"jsonc",
 				"jinja",
-			},
-			-- Autoinstall languages that are not installed
-			auto_install = true,
-			highlight = {
-				enable = true,
-				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-				--  If you are experiencing weird indenting issues, add the language to
-				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
-				additional_vim_regex_highlighting = { "ruby" },
-			},
-			indent = { enable = true, disable = { "ruby" } },
-		},
-		-- There are additional nvim-treesitter modules that you can use to interact
-		-- with nvim-treesitter. You should go explore a few and see what interests you:
-		--
-		--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-		--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-		--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+			}
+
+			require("nvim-treesitter").setup({})
+			require("nvim-treesitter").install(parsers)
+
+			-- jsonc has no dedicated parser on the main branch; reuse json.
+			vim.treesitter.language.register("json", "jsonc")
+
+			local ft_pattern = vim.list_extend({ "jsonc" }, parsers)
+			local ft_set = {}
+			for _, ft in ipairs(ft_pattern) do
+				ft_set[ft] = true
+			end
+
+			local function attach(buf)
+				pcall(vim.treesitter.start, buf)
+				-- Ruby's treesitter indent is unreliable; keep vim's default.
+				if vim.bo[buf].filetype ~= "ruby" then
+					vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end
+			end
+
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = ft_pattern,
+				callback = function(args)
+					attach(args.buf)
+				end,
+			})
+
+			-- Plugin loads after startup; attach to buffers that already have a filetype set.
+			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_loaded(buf) and ft_set[vim.bo[buf].filetype] then
+					attach(buf)
+				end
+			end
+		end,
 	},
 
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
